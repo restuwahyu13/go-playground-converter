@@ -1,25 +1,37 @@
 package gpc
 
-type ErrorResponse struct {
+type ErrorMetaConfig struct {
+	Tag string
+	Field string
+	Message string
+}
+
+type ErrorConfig struct {
+  Options []ErrorMetaConfig
+}
+
+type errorResponse struct {
 	Results    interface{} `json:"results"`
 }
 
-type Binding interface {
-	BindValidator(s interface{}) *ErrorResponse
-}
-
 type binding struct {
-	validator Validator
+	validator validators
 }
 
-func NewBindValidator(validator Validator) *binding {
+func NewBindValidator(validator validators) *binding {
 	return &binding{validator: validator}
 }
 
-func (v *binding) BindValidator(s interface{}) *ErrorResponse {
+func (b *binding) BindValidator(s interface{}, config []ErrorMetaConfig) *errorResponse {
 
-	var errors ErrorResponse
-  validate := v.validator.Validator(s)
+	mergeObject := make(map[int]interface{})
+
+	for i, value := range config {
+		mergeObject[i] = value
+	}
+
+	var errors errorResponse
+  validate := b.validator.validator(s, mergeObject)
 
 	errDataCollection := make(map[string][]map[string]interface{})
 
