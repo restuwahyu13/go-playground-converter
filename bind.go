@@ -1,4 +1,4 @@
-package v
+package gpc
 
 type ErrorResponse struct {
 	Results    interface{} `json:"results"`

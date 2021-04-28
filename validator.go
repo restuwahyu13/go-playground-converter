@@ -1,4 +1,4 @@
-package v
+package gpc
 
 import (
 	"github.com/go-playground/validator/v10"
