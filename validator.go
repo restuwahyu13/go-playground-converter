@@ -7,7 +7,7 @@ import (
 )
 
 type response struct {
-    Message interface{} `json:"msg"`
+    Message interface{} `json:"message"`
     Value interface{} `json:"value"`
     Param string `json:"param"`
     Tag string `json:"tag"`

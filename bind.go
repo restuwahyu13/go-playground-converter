@@ -1,13 +1,13 @@
 package gpc
 
 type ErrorMetaConfig struct {
-	Tag string
-	Field string
-	Message string
+	Tag string `json:"tag"`
+	Field string `json:"field"`
+	Message string `json:"message"`
 }
 
 type ErrorConfig struct {
-  Options []ErrorMetaConfig
+  Options []ErrorMetaConfig `json:"options"`
 }
 
 type errorResponse struct {
