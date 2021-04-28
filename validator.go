@@ -10,7 +10,7 @@ type response struct {
     Value interface{} `json:"value"`
 }
 
-type Validators interface {
+type Validator interface {
     Validator(s interface{}) map[string]interface{}
 }
 
@@ -18,11 +18,11 @@ type validators struct {
     validate *validator.Validate
 }
 
-func NewValidator(validate *validator.Validate) *validators{
+func NewValidator(validate *validator.Validate) *validators {
     return &validators{validate: validate}
 }
 
-func (v *validators) Validator(s *interface{}) map[string]interface{} {
+func (v *validators) Validator(s interface{}) map[string]interface{} {
 
     v.validate = validator.New()
 

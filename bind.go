@@ -9,17 +9,17 @@ type Binding interface {
 }
 
 type binding struct {
-	validators Validators
+	validator Validator
 }
 
-func NewBindValidator(validators Validators) *binding {
-	return &binding{validators: validators}
+func NewBindValidator(validator Validator) *binding {
+	return &binding{validator: validator}
 }
 
-func (v *binding) BindValidator(s *interface{}) *ErrorResponse {
+func (v *binding) BindValidator(s interface{}) *ErrorResponse {
 
 	var errors ErrorResponse
-  validate := v.validators.Validator(&s)
+  validate := v.validator.Validator(s)
 
 	errDataCollection := make(map[string][]map[string]interface{})
 
