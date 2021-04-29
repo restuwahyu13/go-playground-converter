@@ -15,7 +15,7 @@ go-playground-validator, see more about struct reference follow [this](https://g
 ### Installation
 
 ```sh
-$ go get -u https://github.com/restuwahyu13/go-playground-converter
+$ go get -u github.com/restuwahyu13/go-playground-converter
 ```
 
 ### Function Reference
