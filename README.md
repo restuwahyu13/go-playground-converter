@@ -1,20 +1,16 @@
 ## Go Playground Converter
 
-**go-playground-converter** is formatter error response inspiration like `express-validator` in nodejs build on top in
-`go-playground-validator`.
+**go-playground-converter** is formatter error response inspiration like express-validator in nodejs build on top in
+go-playground-validator.
 
 - [GPC API Documentation](<#Agtran-API-Documentation-(Next-Version)>)
-  - [Installation](#Installation)
-  - [Function Reference](#API-Reference)
-    - [NewValidator](#NewValidator)
-    - [NewBindValidator](#NewBindValidator)
-    - [BindValidator](#BindValidator)
-  - [Struct Reference](#Struct-Reference)
-    - [ErrorConfig](#ErrorConfig)
-    - [ErrorMetaConfig](#ErrorMetaConfig)
-  - [Bugs](#Bugs)
-  - [Contributing](#Contributing)
-  - [License](#License)
+  - [Installation](#installation)
+  - [Function Reference](#function-reference)
+  - [Struct Reference](#struct-reference)
+  - [Example Usage](#example-usage)
+  - [Bugs](#bugs)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ### Installation
 
@@ -118,6 +114,38 @@ func main() {
   })
 
   router.Run(":3000")
+
+  // error response like this
+  //   {
+  //     "results": {
+  //         "errors": [
+  //             {
+  //                 "Fullname": {
+  //                     "message": "fullname must be a lowercase",
+  //                     "value": "Restu Wahyu Saputra",
+  //                     "param": "Fullname",
+  //                     "tag": "lowercase"
+  //                 }
+  //             },
+  //             {
+  //                 "Email": {
+  //                     "message": "email format is not valid",
+  //                     "value": "restuwahyu13@#gmail.com",
+  //                     "param": "Email",
+  //                     "tag": "email"
+  //                 }
+  //             },
+  //             {
+  //                 "Password": {
+  //                     "message": "password must be greater 7",
+  //                     "value": "qwerty",
+  //                     "param": "Password",
+  //                     "tag": "gte"
+  //                 }
+  //             }
+  //         ]
+  //     }
+  // }
 }
 ```
 
@@ -136,5 +164,5 @@ Want to make **Midtrans Node** more perfect ? Let's contribute and follow the
 - [MIT License](https://github.com/restuwahyu13/go-playground-converter/blob/main/LICENSE.md)
 
 <p align="right" style="padding: 5px; border-radius: 100%; background-color: red; font-size: 2rem;">
-  <b><a href="#midtrans-node">BACK TO TOP</a></b>
+  <b><a href="#go-playground-converter">BACK TO TOP</a></b>
 </p>
