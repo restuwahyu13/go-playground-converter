@@ -36,7 +36,7 @@ $ go get -u https://github.com/restuwahyu13/go-playground-converter
 ### Example Usage
 
 this is an example usage for go-playground-converter see more about
-[example usage](https://github.com/restuwahyu13/go-playground-converter/tree/master/example) for go-playground -converter.
+[example usage](https://github.com/restuwahyu13/go-playground-converter/tree/master/example) for go-playground-converter.
 
 ```go
 package main
@@ -114,7 +114,7 @@ func main() {
   })
 
   router.Run(":3000")
-
+}
   // error response like this
   //   {
   //     "results": {
@@ -146,7 +146,6 @@ func main() {
   //         ]
   //     }
   // }
-}
 ```
 
 ### Bugs
