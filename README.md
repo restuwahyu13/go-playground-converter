@@ -1,7 +1,7 @@
 ## Go Playground Converter
 
 **go-playground-converter** is formatter error response inspiration like express-validator in nodejs build on top in
-go-playground-validator.
+go-playground-validator, see more about struct reference follow [this](https://github.com/go-playground/validator).
 
 - [Go Playground Converter](#go-playground-converter)
   - [Installation](#installation)
