@@ -161,8 +161,7 @@ Want to make **Go Playground Converter** more perfect ? Let's contribute and fol
 
 ### License
 
-- [MIT
-  License][(https://github.com/restuwahyu13/go-playground-converter/blob/main/license.md](https://github.com/restuwahyu13/go-playground-converter/blob/master/LICENSE.md)
+- [MIT License](https://github.com/restuwahyu13/go-playground-converter/blob/master/LICENSE.md)
 
 <p align="right" style="padding: 5px; border-radius: 100%; background-color: red; font-size: 2rem;">
   <b><a href="#go-playground-converter">BACK TO TOP</a></b>
