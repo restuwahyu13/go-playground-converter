@@ -3,7 +3,7 @@
 **go-playground-converter** is formatter error response inspiration like express-validator in nodejs build on top in
 go-playground-validator.
 
-- [GPC API Documentation](<#Agtran-API-Documentation-(Next-Version)>)
+- [Go Playground Converter](#go-playground-converter)
   - [Installation](#installation)
   - [Function Reference](#function-reference)
   - [Struct Reference](#struct-reference)
