@@ -68,7 +68,7 @@ func main() {
         ctx.AbortWithStatus(http.StatusBadRequest)
         return
       } else {
-        ctx.JSON(http.StatusBadRequest, gin.H{"message": "register new account successfully"})
+        ctx.JSON(http.StatusOK, gin.H{"message": "register new account successfully"})
       }
   })
 
