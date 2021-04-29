@@ -22,7 +22,7 @@ func NewBindValidator(validator validators) *binding {
 	return &binding{validator: validator}
 }
 
-func (b *binding) BindValidator(s interface{}, config []ErrorMetaConfig) *errorResponse {
+func (b *binding) BindValidator(s interface{}, config []ErrorMetaConfig) (*errorResponse, int) {
 
 	mergeObject := make(map[int]interface{})
 
@@ -32,16 +32,16 @@ func (b *binding) BindValidator(s interface{}, config []ErrorMetaConfig) *errorR
 
 	var errors errorResponse
   validate := b.validator.validator(s, mergeObject)
-
 	errDataCollection := make(map[string][]map[string]interface{})
 
-	for i, v := range validate {
-		errorResults := make(map[string]interface{})
-		errorResults[i] = v
-		errDataCollection["errors"] = append(errDataCollection["errors"], errorResults)
+	if len(validate) > 0 {
+		for i, v := range validate {
+			errorResults := make(map[string]interface{})
+			errorResults[i] = v
+			errDataCollection["errors"] = append(errDataCollection["errors"], errorResults)
+		}
+		errors.Results = errDataCollection
 	}
 
-	errors.Results = errDataCollection
-
-	return &errors
+	return &errors , len(validate)
 }

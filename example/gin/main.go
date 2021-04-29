@@ -61,10 +61,12 @@ func main() {
         },
       }
 
-      errResponse := bind.BindValidator(&input, config.Options)
+      errResponse, errCount := bind.BindValidator(&input, config.Options)
 
-      if errResponse != nil {
+      if errCount > 0 {
         ctx.JSON(http.StatusBadRequest, errResponse)
+        ctx.AbortWithStatus(http.StatusBadRequest)
+        return
       } else {
         ctx.JSON(http.StatusBadRequest, gin.H{"message": "register new account successfully"})
       }

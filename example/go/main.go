@@ -59,6 +59,11 @@ func main() {
       },
     }
 
-  errResponse := bind.BindValidator(&input, config.Options)
-  fmt.Println(errResponse)
+  errResponse, errCount := bind.BindValidator(&input, config.Options)
+
+  if errCount > 0 {
+    fmt.Println(errResponse)
+  } else {
+    fmt.Println("not error found")
+  }
 }
