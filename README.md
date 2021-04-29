@@ -156,8 +156,8 @@ For information on bugs related to package libraries, please visit
 
 ### Contributing
 
-Want to make **Go Playground Converter** more perfect ? Let's contribute and follow the [contribution
-guide.](https://github.com/restuwahyu13/go-playground-converter/blob/master/CONTRIBUTING.md
+Want to make **Go Playground Converter** more perfect ? Let's contribute and follow the
+[contribution guide.](https://github.com/restuwahyu13/go-playground-converter/blob/master/CONTRIBUTING.md)
 
 ### License
 
