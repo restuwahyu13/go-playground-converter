@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/go-playground/validator/v10"
-	gpc "github.com/restuwahyu13/go-playground-converter"
+	gpc "github.com/restuwahyu13/go-playground-converter/utils"
 )
 
 type User struct {
@@ -25,39 +25,40 @@ func main() {
   input.Password = "qwerty"
 
   config := gpc.ErrorConfig{
-  Options: []gpc.ErrorMetaConfig{
-      gpc.ErrorMetaConfig{
-        Tag: "lowercase",
-        Field: "Fullname",
-        Message: "fullname is required",
+    Options: []gpc.ErrorMetaConfig{
+        gpc.ErrorMetaConfig{
+          Tag: "required",
+          Field: "Fullname",
+          Message: "fullname is required",
+        },
+        gpc.ErrorMetaConfig{
+          Tag: "lowercase",
+          Field: "Fullname",
+          Message: "fullname must be a lowercase",
+        },
+        gpc.ErrorMetaConfig{
+          Tag: "required",
+          Field: "Email",
+          Message: "email is required",
+        },
+        gpc.ErrorMetaConfig{
+          Tag: "email",
+          Field: "Email",
+          Message: "email format is not valid",
+        },
+        gpc.ErrorMetaConfig{
+          Tag: "required",
+          Field: "Password",
+          Message: "password is required",
+        },
+        gpc.ErrorMetaConfig{
+          Tag: "gte",
+          Field: "Password",
+          Message: "password must be greater 7",
+        },
       },
-      gpc.ErrorMetaConfig{
-        Tag: "lowercase",
-        Field: "Fullname",
-        Message: "fullname must be a lowercase",
-      },
-      gpc.ErrorMetaConfig{
-        Tag: "email",
-        Field: "Email",
-        Message: "email is required",
-      },
-      gpc.ErrorMetaConfig{
-        Tag: "email",
-        Field: "Email",
-        Message: "email format is not valid",
-      },
-      gpc.ErrorMetaConfig{
-        Tag: "required",
-        Field: "Password",
-        Message: "password is required",
-      },
-      gpc.ErrorMetaConfig{
-        Tag: "gte",
-        Field: "Password",
-        Message: "password must be greater 7",
-      },
-    },
-  }
+    }
+
   errResponse := bind.BindValidator(&input, config.Options)
   fmt.Println(errResponse)
 }
