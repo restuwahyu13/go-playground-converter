@@ -18,11 +18,6 @@ go-playground-validator, see more about struct reference follow [this](https://g
   - [Bugs](#bugs)
   - [Contributing](#contributing)
   - [License](#license)
-  -
-  - [Custom Usage](#custom-usage)
-  - [Bugs](#bugs)
-  - [Contributing](#contributing)
-  - [License](#license)
 
 ### Installation
 
@@ -47,7 +42,7 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
 
 ### Example Usage
 
-- Example Usage With Frmework
+- #### Example Usage With Frmework
 
   ```go
   package main
@@ -159,7 +154,7 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
     // }
   ```
 
-  - Example Usage With No Framework
+  - #### Example Usage With No Framework
 
   ```go
   package main
