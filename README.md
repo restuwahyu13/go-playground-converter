@@ -14,6 +14,7 @@ go-playground-validator, see more about struct reference follow [this](https://g
   - [Function Reference](#function-reference)
   - [Struct Reference](#struct-reference)
   - [Example Usage](#example-usage)
+  - [Custom Usage](#custom-usage)
   - [Bugs](#bugs)
   - [Contributing](#contributing)
   - [License](#license)
@@ -152,6 +153,27 @@ func main() {
   //         ]
   //     }
   // }
+```
+
+### Custom Usage
+
+```go
+  package util
+
+  import (
+    "github.com/go-playground/validator/v10"
+    gpc "github.com/restuwahyu13/go-playground-converter"
+  )
+
+
+  func GoValidator(s interface{}, config []gpc.ErrorMetaConfig) (interface{}, int){
+      var validate *validator.Validate
+      validators := gpc.NewValidator(validate)
+      bind := gpc.NewBindValidator(validators)
+
+      errResponse, errCount := bind.BindValidator(&s, config)
+      return errResponse, errCount
+  }
 ```
 
 ### Bugs
