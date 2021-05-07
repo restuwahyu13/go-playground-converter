@@ -1,17 +1,17 @@
 package gpc
 
 type ErrorMetaConfig struct {
-	Tag string
-	Field string
+	Tag     string
+	Field   string
 	Message string
 }
 
 type ErrorConfig struct {
-  Options []ErrorMetaConfig
+	Options []ErrorMetaConfig
 }
 
 type errorResponse struct {
-	Results    interface{} `json:"results"`
+	Results interface{} `json:"results"`
 }
 
 type binding struct {
@@ -31,7 +31,7 @@ func (b *binding) BindValidator(s interface{}, config []ErrorMetaConfig) (*error
 	}
 
 	var errors errorResponse
-  validate := b.validator.validator(s, mergeObject)
+	validate := b.validator.validator(s, mergeObject)
 	errDataCollection := make(map[string][]map[string]interface{})
 
 	if len(validate) > 0 {
@@ -43,5 +43,5 @@ func (b *binding) BindValidator(s interface{}, config []ErrorMetaConfig) (*error
 		errors.Results = errDataCollection
 	}
 
-	return &errors , len(validate)
+	return &errors, len(validate)
 }
