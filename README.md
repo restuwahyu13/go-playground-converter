@@ -1,10 +1,7 @@
 ## Go Playground Converter
 
-![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/restuwahyu13/go-playground-converter?style=for-the-badge)
-![GitHub](https://img.shields.io/github/license/restuwahyu13/go-playground-converter?style=for-the-badge)
-![GitHub issues](https://img.shields.io/github/issues/restuwahyu13/go-playground-converter?style=for-the-badge)
-![GitHub closed issues](https://img.shields.io/github/issues-closed/restuwahyu13/go-playground-converter?style=for-the-badge)
-![GitHub contributors](https://img.shields.io/github/contributors/restuwahyu13/go-palyground-converter?style=for-the-badge)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/restuwahyu13/go-playground-converter?style=flat)
+[![Go Report Card](https://goreportcard.com/badge/github.com/restuwahyu13/go-playground-converter)](https://goreportcard.com/report/github.com/restuwahyu13/go-playground-converter)
 
 **go-playground-converter** is formatter error response inspiration like express-validator in nodejs build on top in
 go-playground-validator, see more about struct reference follow [this](https://github.com/go-playground/validator).
