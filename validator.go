@@ -1,55 +1,110 @@
-package gpc
+package main
 
 import (
-	"encoding/json"
+	"fmt"
+	"log"
+	"reflect"
 
+	"github.com/go-playground/locales/en"
+	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
+	en_translations "github.com/go-playground/validator/v10/translations/en"
 )
 
-type response struct {
-	Message interface{} `json:"message"`
-	Value   interface{} `json:"value"`
-	Param   string      `json:"param"`
-	Tag     string      `json:"tag"`
+type errorResponse struct {
+	Errors interface{} `json:"errors"`
 }
 
-type validators interface {
-	validator(s interface{}, config map[int]interface{}) map[string]interface{}
-}
+// For validation request from struct field
+func Validator(s interface{}) errorResponse {
+	// check data type before validation struct
+	dataType(s)
 
-type validate struct {
-	v2 *validator.Validate
-}
+	val := validator.New()
+	err := val.Struct(s)
 
-func NewValidator(v2 *validator.Validate) *validate {
-	return &validate{v2: v2}
-}
+	english := en.New()
+	uni := ut.New(english, english)
+	trans, _ := uni.GetTranslator("en")
+	trans_err := en_translations.RegisterDefaultTranslations(val, trans)
 
-func (v *validate) validator(s interface{}, config map[int]interface{}) map[string]interface{} {
-
-	errObject := make(map[string]interface{})
-
-	for _, value := range config {
-		encode, _ := json.Marshal(value)
-		json.Unmarshal(encode, &value)
-		mapping := value.(map[string]interface{})
-
-		v.v2 = validator.New()
-		err := v.v2.Struct(s)
-
-		if err != nil {
-			for _, errResult := range err.(validator.ValidationErrors) {
-				switch {
-				case mapping["Tag"] == errResult.ActualTag() && mapping["Field"] == errResult.StructField():
-					errObject[errResult.StructField()] = response{
-						Message: mapping["Message"],
-						Value:   errResult.Value(),
-						Param:   errResult.StructField(),
-						Tag:     errResult.ActualTag(),
-					}
-				}
-			}
-		}
+	if trans_err != nil {
+		defer log.Fatalf("RegisterDefaultTranslations Error: %v", trans_err)
+		panic(fmt.Sprintf("RegisterDefaultTranslations Error: %v", trans_err))
 	}
-	return errObject
+
+	return bindError(err, trans)
+}
+
+/**
+ * @description -> binding error response into validator
+ */
+
+func bindError(err error, trans ut.Translator) errorResponse {
+	errCollection := make(map[string][]map[string]interface{})
+	errors := errorResponse{}
+
+	if err == nil {
+		return errors
+	}
+
+	for _, e := range err.(validator.ValidationErrors) {
+
+		errResult := make(map[string]interface{})
+		errResult["param"] = e.StructField()
+		errResult["msg"] = e.Translate(trans)
+		errResult["tag"] = e.Tag()
+
+		errCollection["errors"] = append(errCollection["errors"], errResult)
+		errors.Errors = errCollection["errors"]
+	}
+
+	if errors.Errors == nil {
+		errors.Errors = errCollection
+	}
+
+	return errors
+}
+
+func dataType(typeData interface{}) {
+	var x1 interface{}
+	var x2 struct{}
+
+	switch reflect.TypeOf(typeData) {
+
+	case reflect.TypeOf(0):
+		defer log.Fatalf("Validator value not supported, because %v is not struct type:", reflect.TypeOf(typeData))
+		panic("Validator value not supported, because is not struct type")
+
+	case reflect.TypeOf("hello"):
+		defer log.Fatalf("Validator value not supported, because %v is not struct type", reflect.TypeOf(typeData))
+		panic("Validator value not supported, because is not struct type")
+
+	case reflect.TypeOf([]int{0}):
+		defer log.Fatalf("Validator value not supported, because %v is not struct type", reflect.TypeOf(typeData))
+		panic("Validator value not supported, because is not struct type")
+
+	case reflect.TypeOf([]string{"hello"}):
+		defer log.Fatalf("Validator value not supported, because %v is not struct type", reflect.TypeOf(typeData))
+		panic("Validator value not supported, because is not struct type")
+
+	case reflect.TypeOf(map[string]interface{}{"name": "john doe"}):
+		defer log.Fatalf("Validator value not supported, because %v is not struct type", reflect.TypeOf(typeData))
+		panic("Validator value not supported, because is not struct type")
+
+	case reflect.TypeOf([]map[string]interface{}{{"name": "john doe"}}):
+		defer log.Fatalf("Validator value not supported, because %v is not struct type", reflect.TypeOf(typeData))
+		panic("Validator value not supported, because is not struct type")
+
+	case reflect.TypeOf(x1):
+		defer log.Fatalf("Validator value not supported, because %v is not struct type", reflect.TypeOf(typeData))
+		panic("Validator value not supported, because is not struct type")
+
+	case reflect.TypeOf(x2):
+		defer log.Fatalf("Validator value not supported, because %v is not struct type", reflect.TypeOf(typeData))
+		panic("Validator value not supported, because is not struct type")
+
+	default:
+		return
+	}
 }

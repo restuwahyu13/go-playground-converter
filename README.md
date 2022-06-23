@@ -11,10 +11,7 @@ go-playground-validator, see more about struct reference follow [this](https://g
 
 - [Go Playground Converter](#go-playground-converter)
   - [Installation](#installation)
-  - [Function Reference](#function-reference)
-  - [Struct Reference](#struct-reference)
   - [Example Usage](#example-usage)
-  - [Custom Usage](#custom-usage)
   - [Bugs](#bugs)
   - [Contributing](#contributing)
   - [License](#license)
@@ -25,259 +22,41 @@ go-playground-validator, see more about struct reference follow [this](https://g
 $ go get -u github.com/restuwahyu13/go-playground-converter
 ```
 
-### Function Reference
-
-| Method Name          | Description                                                  |
-| -------------------- | ------------------------------------------------------------ |
-| **NewValidator**     | wrapper struct validation schema for go playground validator |
-| **NewBindValidator** | change the struct to an error response                       |
-| **BindValidator**    | for returning error response                                 |
-
-### Struct Reference
-
-| Struct Name         | Description                                         |
-| ------------------- | --------------------------------------------------- |
-| **ErrorConfig**     | config for creating error message                   |
-| **ErrorMetaConfig** | meta config defination for returning error response |
-
 ### Example Usage
 
-- #### Example Usage With Frmework
-
-  ```go
-  package main
-
-  import (
-    "net/http"
-
-    "github.com/gin-gonic/gin"
-
-    "github.com/go-playground/validator/v10"
-    gpc "github.com/restuwahyu13/go-playground-converter"
-  )
-
-  type User struct {
-    Fullname string `validate:"required,lowercase"`
-    Email string `validate:"required,email"`
-    Password string `validate:"required,gte=8"`
-  }
-
-  func main() {
-    router := gin.Default()
-    router.POST("/", func(ctx *gin.Context) {
-
-      var input User
-      ctx.ShouldBindJSON(&input)
-
-      var validate *validator.Validate
-      validators := gpc.NewValidator(validate)
-      bind := gpc.NewBindValidator(validators)
-
-      config := gpc.ErrorConfig{
-        Options: []gpc.ErrorMetaConfig{
-            gpc.ErrorMetaConfig{
-              Tag: "required",
-              Field: "Fullname",
-              Message: "fullname is required",
-            },
-            gpc.ErrorMetaConfig{
-              Tag: "lowercase",
-              Field: "Fullname",
-              Message: "fullname must be a lowercase",
-            },
-            gpc.ErrorMetaConfig{
-              Tag: "required",
-              Field: "Email",
-              Message: "email is required",
-            },
-            gpc.ErrorMetaConfig{
-              Tag: "email",
-              Field: "Email",
-              Message: "email format is not valid",
-            },
-            gpc.ErrorMetaConfig{
-              Tag: "required",
-              Field: "Password",
-              Message: "password is required",
-            },
-            gpc.ErrorMetaConfig{
-              Tag: "gte",
-              Field: "Password",
-              Message: "password must be greater 7",
-            },
-          },
-        }
-
-        errResponse, errCount := bind.BindValidator(&input, config.Options)
-
-        if errCount > 0 {
-          ctx.JSON(http.StatusBadRequest, errResponse)
-          ctx.AbortWithStatus(http.StatusBadRequest)
-          return
-        } else {
-          ctx.JSON(http.StatusOk, gin.H{"message": "register new account successfully"})
-        }
-    })
-
-    router.Run(":3000")
-  }
-    // error response like this
-    //   {
-    //     "results": {
-    //         "errors": [
-    //             {
-    //                 "Fullname": {
-    //                     "message": "fullname must be a lowercase",
-    //                     "value": "Restu Wahyu Saputra",
-    //                     "param": "Fullname",
-    //                     "tag": "lowercase"
-    //                 }
-    //             },
-    //             {
-    //                 "Email": {
-    //                     "message": "email format is not valid",
-    //                     "value": "restuwahyu13@#gmail.com",
-    //                     "param": "Email",
-    //                     "tag": "email"
-    //                 }
-    //             },
-    //             {
-    //                 "Password": {
-    //                     "message": "password must be greater 7",
-    //                     "value": "qwerty",
-    //                     "param": "Password",
-    //                     "tag": "gte"
-    //                 }
-    //             }
-    //         ]
-    //     }
-    // }
-  ```
-
-- #### Example Usage With No Framework
-
-  ```go
-  package main
-
-  import (
-    "fmt"
-
-    "github.com/go-playground/validator/v10"
-    gpc "github.com/restuwahyu13/go-playground-converter/utils"
-  )
-
-  type User struct {
-    Fullname string `validate:"required,lowercase"`
-    Email string `validate:"required,email"`
-    Password string `validate:"required,gte=8"`
-  }
-
-  func main() {
-
-    var input User
-    var validate *validator.Validate
-    validators := gpc.NewValidator(validate)
-    bind := gpc.NewBindValidator(validators)
-
-    input.Fullname = "Restu Wahyu Saputra"
-    input.Email = "restuwahyu13@#zetmail.com"
-    input.Password = "qwerty"
-
-    config := gpc.ErrorConfig{
-      Options: []gpc.ErrorMetaConfig{
-          gpc.ErrorMetaConfig{
-            Tag: "required",
-            Field: "Fullname",
-            Message: "fullname is required",
-          },
-          gpc.ErrorMetaConfig{
-            Tag: "lowercase",
-            Field: "Fullname",
-            Message: "fullname must be a lowercase",
-          },
-          gpc.ErrorMetaConfig{
-            Tag: "required",
-            Field: "Email",
-            Message: "email is required",
-          },
-          gpc.ErrorMetaConfig{
-            Tag: "email",
-            Field: "Email",
-            Message: "email format is not valid",
-          },
-          gpc.ErrorMetaConfig{
-            Tag: "required",
-            Field: "Password",
-            Message: "password is required",
-          },
-          gpc.ErrorMetaConfig{
-            Tag: "gte",
-            Field: "Password",
-            Message: "password must be greater 7",
-          },
-        },
-      }
-
-    errResponse, errCount := bind.BindValidator(&input, config.Options)
-
-    if errCount > 0 {
-      fmt.Println(errResponse)
-    } else {
-      fmt.Println("not error found")
-    }
-  }
-    // error response like this
-    //   {
-    //     "results": {
-    //         "errors": [
-    //             {
-    //                 "Fullname": {
-    //                     "message": "fullname must be a lowercase",
-    //                     "value": "Restu Wahyu Saputra",
-    //                     "param": "Fullname",
-    //                     "tag": "lowercase"
-    //                 }
-    //             },
-    //             {
-    //                 "Email": {
-    //                     "message": "email format is not valid",
-    //                     "value": "restuwahyu13@#gmail.com",
-    //                     "param": "Email",
-    //                     "tag": "email"
-    //                 }
-    //             },
-    //             {
-    //                 "Password": {
-    //                     "message": "password must be greater 7",
-    //                     "value": "qwerty",
-    //                     "param": "Password",
-    //                     "tag": "gte"
-    //                 }
-    //             }
-    //         ]
-    //     }
-    // }
-  ```
-
-### Custom Usage
-
 ```go
-package util
+  package main
 
-import (
-  "github.com/go-playground/validator/v10"
-  gpc "github.com/restuwahyu13/go-playground-converter"
-)
+  import (
+  "fmt"
+   gpc "github.com/restuwahyu13/go-playground-converter"
+  )
 
+  type Login struct {
+  	Email    string `validate:"required,email"`
+  	Password string `validate:"required"`
+  }
 
-func GoValidator(s interface{}, config []gpc.ErrorMetaConfig) (interface{}, int) {
-    var validate *validator.Validate
-    validators := gpc.NewValidator(validate)
-    bind := gpc.NewBindValidator(validators)
+  func main() {
+   	payload := Login{Email: "", Password: ""}
+  		err := Validator(payload)
+  		fmt.Println(err.Errors) // if not errors validator return nil value
+  }
 
-    errResponse, errCount := bind.BindValidator(s, config)
-    return errResponse, errCount
-}
+  // {
+  //   "errors": [
+  //     {
+  //       "msg": "Email is a required field",
+  //       "param": "Email",
+  //       "tag": "required"
+  //     },
+  //     {
+  //       "msg": "Password is a required field",
+  //       "param": "Password",
+  //       "tag": "required"
+  //     }
+  //   ]
+  // }
 ```
 
 ### Bugs
