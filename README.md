@@ -36,7 +36,7 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
 
   func main() {
    	payload := Login{Email: "", Password: ""}
-  		err := gpc.NewValidator(payload)
+  		err := gpc.Validator(payload)
   		fmt.Println(err.Errors) // if not errors validator return nil value
   }
 
