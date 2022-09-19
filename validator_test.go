@@ -15,7 +15,7 @@ func TestValidator(action *testing.T) {
 	action.Run("Should be validator - is not empty value", func(t *testing.T) {
 
 		payload := Login{Email: "", Password: ""}
-		err := NewValidator(payload)
+		err := Validator(payload)
 
 		for _, v := range err.Errors.([]map[string]interface{}) {
 
@@ -36,7 +36,7 @@ func TestValidator(action *testing.T) {
 	action.Run("Should be validator - email is not valid", func(t *testing.T) {
 
 		payload := Login{Email: "johndoe@#gmail.com", Password: "qwerty12"}
-		err := NewValidator(payload)
+		err := Validator(payload)
 
 		for _, v := range err.Errors.([]map[string]interface{}) {
 
@@ -53,7 +53,7 @@ func TestValidator(action *testing.T) {
 
 	action.Run("Should be validator - success", func(t *testing.T) {
 		payload := Login{Email: "johndoe@gmail.com", Password: "qwerty12"}
-		err := NewValidator(payload)
+		err := Validator(payload)
 
 		assert.Equal(t, err.Errors, nil)
 	})
