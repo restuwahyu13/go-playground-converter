@@ -16,7 +16,7 @@ type errorResponse struct {
 }
 
 // Validation request for struct field
-func NewValidator(s interface{}) errorResponse {
+func Validator(s interface{}) errorResponse {
 	dataType(s)
 
 	val := validator.New()
