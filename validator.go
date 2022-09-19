@@ -15,9 +15,8 @@ type errorResponse struct {
 	Errors interface{} `json:"errors"`
 }
 
-// For validation request from struct field
-func Validator(s interface{}) errorResponse {
-	// check data type before validation struct
+// Validation request for struct field
+func NewValidator(s interface{}) errorResponse {
 	dataType(s)
 
 	val := validator.New()
