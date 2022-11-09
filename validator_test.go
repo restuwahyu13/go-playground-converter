@@ -8,22 +8,19 @@ import (
 
 type Login struct {
 	Email    string `validate:"required,email"`
-	Password string `validate:"required"`
+	Password string `validate:"required,gt=7"`
 }
 
 func TestValidator(action *testing.T) {
 	action.Run("Should be validator - is not empty value", func(t *testing.T) {
 
 		payload := Login{Email: "", Password: ""}
-		err := Validator(payload)
+		res := Validator(payload)
 
-		for _, v := range err.Errors.([]map[string]interface{}) {
-
+		for _, v := range res.(map[string][]map[string]interface{})["errors"] {
 			switch v["msg"] {
-
 			case "Email is a required field":
 				assert.Equal(t, v["msg"], "Email is a required field")
-
 			case "Password is a required field":
 				assert.Equal(t, v["msg"], "Password is a required field")
 
@@ -34,14 +31,11 @@ func TestValidator(action *testing.T) {
 	})
 
 	action.Run("Should be validator - email is not valid", func(t *testing.T) {
-
 		payload := Login{Email: "johndoe@#gmail.com", Password: "qwerty12"}
-		err := Validator(payload)
+		res := Validator(payload)
 
-		for _, v := range err.Errors.([]map[string]interface{}) {
-
+		for _, v := range res.(map[string][]map[string]interface{})["errors"] {
 			switch v["msg"] {
-
 			case "Email must be a valid email address":
 				assert.Equal(t, v["msg"], "Email must be a valid email address")
 
@@ -51,10 +45,24 @@ func TestValidator(action *testing.T) {
 		}
 	})
 
+	action.Run("Should be validator - password must be greater than 7", func(t *testing.T) {
+		payload := Login{Email: "johndoe@gmail.com", Password: "qwerty"}
+		res := Validator(payload)
+
+		for _, v := range res.(map[string][]map[string]interface{})["errors"] {
+			switch v["msg"] {
+			case "Password must be greater than 7 characters in length":
+				assert.Equal(t, v["msg"], "Password must be greater than 7 characters in length")
+
+			default:
+				t.FailNow()
+			}
+		}
+	})
+
 	action.Run("Should be validator - success", func(t *testing.T) {
 		payload := Login{Email: "johndoe@gmail.com", Password: "qwerty12"}
-		err := Validator(payload)
-
-		assert.Equal(t, err.Errors, nil)
+		res := Validator(payload)
+		assert.Equal(t, res, nil)
 	})
 }

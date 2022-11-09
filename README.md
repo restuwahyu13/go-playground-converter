@@ -31,13 +31,13 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
 
   type Login struct {
   	Email    string `validate:"required,email"`
-  	Password string `validate:"required"`
+  	Password string `validate:"required,gt=7"`
   }
 
   func main() {
-   	payload := Login{Email: "", Password: ""}
+   	  payload := Login{Email: "", Password: ""}
   		err := gpc.Validator(payload)
-  		fmt.Println(err.Errors) // if not errors validator return nil value
+  		fmt.Println(err) // if not errors, validator return nil value
   }
 
   // {
