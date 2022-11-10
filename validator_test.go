@@ -14,7 +14,7 @@ type Login struct {
 func TestValidator(action *testing.T) {
 	action.Run("Should be validator - is not empty value", func(t *testing.T) {
 
-		payload := Login{Email: "", Password: ""}
+		payload := Login{Email: "johndoe@gmail.com", Password: ""}
 		res := Validator(payload)
 
 		for _, v := range res.(map[string][]map[string]interface{})["errors"] {

@@ -12,7 +12,11 @@ import (
 
 // Validation request from struct field
 func Validator(s interface{}) interface{} {
-	dataType(s)
+	if reflect.TypeOf(s).Kind().String() != "struct" {
+		panic(fmt.Errorf("Validator value not supported, because %v is not struct", reflect.TypeOf(s).Kind().String()))
+	} else if reflect.ValueOf(s).IsZero() {
+		panic(fmt.Errorf("Validator value can't be empty struct %v", s))
+	}
 
 	val := validator.New()
 	err := val.Struct(s)
@@ -45,35 +49,4 @@ func bindError(err error, trans ut.Translator) interface{} {
 	}
 
 	return errRes
-}
-
-func dataType(typeData interface{}) {
-	var x1 interface{}
-	var x2 struct{}
-
-	switch reflect.TypeOf(typeData) {
-	case reflect.TypeOf(0):
-		panic(fmt.Errorf("Validator value not supported, because %v is not struct type:", reflect.TypeOf(typeData)))
-
-	case reflect.TypeOf("hello"):
-		panic(fmt.Errorf("Validator value not supported, because %v is not struct type", reflect.TypeOf(typeData)))
-
-	case reflect.TypeOf([]int{0}):
-		panic(fmt.Errorf("Validator value not supported, because %v is not struct type", reflect.TypeOf(typeData)))
-
-	case reflect.TypeOf([]string{"hello"}):
-		panic(fmt.Errorf("Validator value not supported, because %v is not struct type", reflect.TypeOf(typeData)))
-
-	case reflect.TypeOf(map[string]interface{}{"name": "john doe"}):
-		panic(fmt.Errorf("Validator value not supported, because %v is not struct type", reflect.TypeOf(typeData)))
-
-	case reflect.TypeOf([]map[string]interface{}{{"name": "john doe"}}):
-		panic(fmt.Errorf("Validator value not supported, because %v is not struct type", reflect.TypeOf(typeData)))
-
-	case reflect.TypeOf(x1):
-		panic(fmt.Errorf("Validator value not supported, because %v is not struct type", reflect.TypeOf(typeData)))
-
-	case reflect.TypeOf(x2):
-		panic(fmt.Errorf("Validator value not supported, because %v is not struct type", reflect.TypeOf(typeData)))
-	}
 }
