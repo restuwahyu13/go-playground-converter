@@ -116,7 +116,7 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
 - Testing Via Docker
 
   ```sh
-  docker build -t go-playground-converter --compress . && docker run go-playground-converter go test .
+  docker build -t go-playground-converter --compress . && docker run go-playground-converter go test --cover -v --failfast .
   ```
 
 ### Bugs
