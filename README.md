@@ -10,7 +10,7 @@ go-playground-validator, see more about struct reference follow [this](https://g
   - [Installation](#installation)
   - [Example Usage Without GPC Tags](#example-usage-without-gpc-tags)
   - [Example Usage With GPC Tags](#example-usage-with-gpc-tags)
-- [Testing](#testing)
+  - [Testing](#testing)
   - [Bugs](#bugs)
   - [Contributing](#contributing)
   - [License](#license)
