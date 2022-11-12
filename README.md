@@ -4,11 +4,12 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/restuwahyu13/go-playground-converter)](https://goreportcard.com/report/github.com/restuwahyu13/go-playground-converter)
 
 **go-playground-converter** is formatter error response inspiration like express-validator in nodejs build on top in
-go-playground-validator, see more about struct reference follow [this](https://github.com/go-playground/validator).
+go-playground-validator, see more about struct reference follow [this](https://github.com/go-playground/validator) and for new version you can use custom message using `gcp`.
 
 - [Go Playground Converter](#go-playground-converter)
   - [Installation](#installation)
-  - [Example Usage](#example-usage)
+  - [Example Usage Without GPC Tags](#example-usage-without-gpc-tags)
+  - [Example Usage With GPC Tags](#example-usage-with-gpc-tags)
   - [Bugs](#bugs)
   - [Contributing](#contributing)
   - [License](#license)
@@ -19,7 +20,7 @@ go-playground-validator, see more about struct reference follow [this](https://g
 $ go get -u github.com/restuwahyu13/go-playground-converter
 ```
 
-### Example Usage
+### Example Usage Without GPC Tags
 
 ```go
   package main
@@ -30,8 +31,8 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
   )
 
   type Login struct {
-  	Email    string `validate:"required,email"`
-  	Password string `validate:"required,gt=7"`
+  	Email    string `validate:"required"`
+  	Password string `validate:"required"`
   }
 
   func main() {
@@ -49,6 +50,43 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
   //     },
   //     {
   //       "msg": "Password is a required field",
+  //       "param": "Password",
+  //       "tag": "required"
+  //     }
+  //   ]
+  // }
+```
+
+### Example Usage With GPC Tags
+
+```go
+  package main
+
+  import (
+  "fmt"
+   gpc "github.com/restuwahyu13/go-playground-converter"
+  )
+
+  type Login struct {
+  	Email    string `validate:"required" gpc:"required=Email tidak boleh kosong"`
+  	Password string `validate:"required" gpc:"required=Password tidak boleh kosong"`
+  }
+
+  func main() {
+   	  payload := Login{Email: "", Password: ""}
+  		err := gpc.Validator(payload)
+  		fmt.Println(err) // if not errors, validator return nil value
+  }
+
+  // {
+  //   "errors": [
+  //     {
+  //       "msg": "Email tidak boleh kosong",
+  //       "param": "Email",
+  //       "tag": "required"
+  //     },
+  //     {
+  //       "msg": "Password tidak boleh kosong",
   //       "param": "Password",
   //       "tag": "required"
   //     }
