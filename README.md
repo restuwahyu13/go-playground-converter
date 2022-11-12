@@ -37,8 +37,8 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
   }
 
   func main() {
-   	  payload := Login{Email: "", Password: ""}
-  		res, err := gpc.Validator(payload)
+     payload := Login{Email: "", Password: ""}
+     res, err := gpc.Validator(payload)
 
       if err != nil {
         panic(err)
@@ -79,8 +79,8 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
   }
 
   func main() {
-   	  payload := Login{Email: "", Password: ""}
-  		res, err := gpc.Validator(payload)
+     payload := Login{Email: "", Password: ""}
+     res, err := gpc.Validator(payload)
 
       if err != nil {
         panic(err)
