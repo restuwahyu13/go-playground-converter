@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/go-playground/assert/v2"
+	"github.com/restuwahyu13/go-playground-converter/helpers"
 )
 
 type Login struct {
@@ -29,7 +29,7 @@ func TestValidator(action *testing.T) {
 
 		_, err := Validator(payload)
 		if err != nil {
-			assert.Equal(t, err.Error(), fmt.Sprintf("validator value not supported, because %v is not struct", reflect.TypeOf(payload).Kind().String()))
+			helpers.AssertTest(t, err.Error(), fmt.Sprintf("validator value not supported, because %v is not struct", reflect.TypeOf(payload).Kind().String()))
 		}
 	})
 
@@ -38,7 +38,7 @@ func TestValidator(action *testing.T) {
 		_, err := Validator(payload)
 
 		if err != nil {
-			assert.Equal(t, err.Error(), fmt.Sprintf("validator value can't be empty struct %v", payload))
+			helpers.AssertTest(t, err.Error(), fmt.Sprintf("validator value can't be empty struct %v", payload))
 		}
 	})
 
@@ -50,9 +50,9 @@ func TestValidator(action *testing.T) {
 		for _, v := range res.(map[string][]map[string]interface{})["errors"] {
 			switch v["msg"] {
 			case "Email is a required field":
-				assert.Equal(t, v["msg"], "Email is a required field")
+				helpers.AssertTest(t, v["msg"], "Email is a required field")
 			case "Password is a required field":
-				assert.Equal(t, v["msg"], "Password is a required field")
+				helpers.AssertTest(t, v["msg"], "Password is a required field")
 
 			default:
 				t.FailNow()
@@ -67,7 +67,7 @@ func TestValidator(action *testing.T) {
 		for _, v := range res.(map[string][]map[string]interface{})["errors"] {
 			switch v["msg"] {
 			case "Email must be a valid email address":
-				assert.Equal(t, v["msg"], "Email must be a valid email address")
+				helpers.AssertTest(t, v["msg"], "Email must be a valid email address")
 
 			default:
 				t.FailNow()
@@ -82,7 +82,7 @@ func TestValidator(action *testing.T) {
 		for _, v := range res.(map[string][]map[string]interface{})["errors"] {
 			switch v["msg"] {
 			case "Password must be greater than 7 characters in length":
-				assert.Equal(t, v["msg"], "Password must be greater than 7 characters in length")
+				helpers.AssertTest(t, v["msg"], "Password must be greater than 7 characters in length")
 
 			default:
 				t.FailNow()
@@ -95,7 +95,7 @@ func TestValidator(action *testing.T) {
 		res, _ := Validator(payload)
 
 		if count := len(res.(map[string][]map[string]interface{})["errors"]); count == 2 {
-			assert.Equal(t, 2, count)
+			helpers.AssertTest(t, 2, count)
 		} else {
 			t.FailNow()
 		}
@@ -106,7 +106,7 @@ func TestValidator(action *testing.T) {
 		res, _ := Validator(payload)
 
 		if count := len(res.(map[string][]map[string]interface{})["errors"]); count == 2 {
-			assert.Equal(t, 2, count)
+			helpers.AssertTest(t, 2, count)
 		} else {
 			t.FailNow()
 		}
@@ -119,7 +119,7 @@ func TestValidator(action *testing.T) {
 		for _, v := range res.(map[string][]map[string]interface{})["errors"] {
 			switch v["msg"] {
 			case "email tidak boleh kosong":
-				assert.Equal(t, v["msg"], "email tidak boleh kosong")
+				helpers.AssertTest(t, v["msg"], "email tidak boleh kosong")
 
 			default:
 				t.FailNow()
@@ -134,7 +134,7 @@ func TestValidator(action *testing.T) {
 		for _, v := range res.(map[string][]map[string]interface{})["errors"] {
 			switch v["msg"] {
 			case "password tidak boleh kosong":
-				assert.Equal(t, v["msg"], "password tidak boleh kosong")
+				helpers.AssertTest(t, v["msg"], "password tidak boleh kosong")
 
 			default:
 				t.FailNow()
@@ -147,7 +147,7 @@ func TestValidator(action *testing.T) {
 		res, _ := Validator(payload)
 
 		if count := len(res.(map[string][]map[string]interface{})["errors"]); count == 2 {
-			assert.Equal(t, 2, count)
+			helpers.AssertTest(t, 2, count)
 		} else {
 			t.FailNow()
 		}
@@ -158,7 +158,7 @@ func TestValidator(action *testing.T) {
 		res, _ := Validator(payload)
 
 		if count := len(res.(map[string][]map[string]interface{})["errors"]); count == 2 {
-			assert.Equal(t, 2, count)
+			helpers.AssertTest(t, 2, count)
 		} else {
 			t.FailNow()
 		}
@@ -171,7 +171,7 @@ func TestValidator(action *testing.T) {
 		for _, v := range res.(map[string][]map[string]interface{})["errors"] {
 			switch v["msg"] {
 			case "email format tidak valid":
-				assert.Equal(t, v["msg"], "email format tidak valid")
+				helpers.AssertTest(t, v["msg"], "email format tidak valid")
 
 			default:
 				t.FailNow()
@@ -186,7 +186,7 @@ func TestValidator(action *testing.T) {
 		for _, v := range res.(map[string][]map[string]interface{})["errors"] {
 			switch v["msg"] {
 			case "password harus lebih besar dari 7":
-				assert.Equal(t, v["msg"], "password harus lebih besar dari 7")
+				helpers.AssertTest(t, v["msg"], "password harus lebih besar dari 7")
 
 			default:
 				t.FailNow()
@@ -197,6 +197,6 @@ func TestValidator(action *testing.T) {
 	action.Run("Should be validator - success", func(t *testing.T) {
 		payload := Login{Email: "johndoe@gmail.com", Password: "qwerty12"}
 		res, _ := Validator(payload)
-		assert.Equal(t, res, nil)
+		helpers.AssertTest(t, res, nil)
 	})
 }

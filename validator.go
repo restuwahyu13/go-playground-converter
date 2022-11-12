@@ -3,8 +3,6 @@ package gpc
 import (
 	"fmt"
 	"reflect"
-	"regexp"
-	"strings"
 
 	"github.com/go-playground/locales/en"
 	ut "github.com/go-playground/universal-translator"
@@ -13,16 +11,6 @@ import (
 
 	"github.com/restuwahyu13/go-playground-converter/helpers"
 )
-
-type Messages struct {
-	Param string `json:"param"`
-	Tag   string `json:"tag"`
-	Msg   string `json:"msg"`
-}
-
-type ErrorsResponse struct {
-	Errors []Messages
-}
 
 // Validation request from struct field
 func Validator(s interface{}) (interface{}, error) {
@@ -47,40 +35,5 @@ func Validator(s interface{}) (interface{}, error) {
 		return nil, err
 	}
 
-	return formatError(err, trans, s)
-}
-
-func formatError(err error, trans ut.Translator, customMessage interface{}) (interface{}, error) {
-	errRes := make(map[string][]map[string]interface{})
-	tags := []string{}
-
-	for i, e := range err.(validator.ValidationErrors) {
-
-		errResult := make(map[string]interface{})
-		errResult["param"] = e.StructField()
-
-		if _, ok := reflect.TypeOf(customMessage).Field(i).Tag.Lookup("gpc"); !ok {
-			errResult["msg"] = e.Translate(trans)
-		} else {
-			strucField, _ := reflect.TypeOf(customMessage).FieldByName(e.StructField())
-			structTags := strucField.Tag.Get("gpc")
-
-			regexTag := regexp.MustCompile(`=+[\w].*`)
-			regexVal := regexp.MustCompile(`[\w]+=`)
-			strArr := strings.Split(structTags, ",")
-			tags = append(tags, helpers.MergeSlice(strArr)...)
-
-			for j, v := range tags {
-				if ok := regexTag.ReplaceAllString(tags[j], ""); ok == e.ActualTag() {
-					errResult["msg"] = regexVal.ReplaceAllString(v, "")
-					tags = append(tags, "")
-				}
-			}
-		}
-
-		errResult["tag"] = e.ActualTag()
-		errRes["errors"] = append(errRes["errors"], errResult)
-	}
-
-	return errRes, nil
+	return helpers.FormatError(err, trans, s)
 }
