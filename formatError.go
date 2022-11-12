@@ -1,4 +1,4 @@
-package helpers
+package gpc
 
 import (
 	"reflect"
@@ -9,7 +9,7 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-func FormatError(err error, trans ut.Translator, customMessage interface{}) (interface{}, error) {
+func formatError(err error, trans ut.Translator, customMessage interface{}) (interface{}, error) {
 	errRes := make(map[string][]map[string]interface{})
 	tags := []string{}
 
@@ -27,7 +27,7 @@ func FormatError(err error, trans ut.Translator, customMessage interface{}) (int
 			regexTag := regexp.MustCompile(`=+[\w].*`)
 			regexVal := regexp.MustCompile(`[\w]+=`)
 			strArr := strings.Split(structTags, ",")
-			tags = append(tags, MergeSlice(strArr)...)
+			tags = append(tags, mergeSlice(strArr)...)
 
 			for j, v := range tags {
 				if ok := regexTag.ReplaceAllString(tags[j], ""); ok == e.ActualTag() {

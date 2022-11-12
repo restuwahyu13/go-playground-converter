@@ -1,8 +1,8 @@
-package helpers
+package gpc
 
 import "testing"
 
-func AssertTest(t *testing.T, val1, val2 interface{}) {
+func assert(t *testing.T, val1, val2 interface{}) {
 	defer t.Cleanup(func() {
 		val1 = nil
 		val2 = nil

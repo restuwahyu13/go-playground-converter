@@ -1,6 +1,6 @@
-package helpers
+package gpc
 
-func MergeSlice(input ...[]string) (res []string) {
+func mergeSlice(input ...[]string) (res []string) {
 	if len(input) > 0 {
 		for i, _ := range input {
 			for _, j := range input[i] {

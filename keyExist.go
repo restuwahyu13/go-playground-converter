@@ -1,4 +1,4 @@
-package helpers
+package gpc
 
 import (
 	"encoding/json"
@@ -6,7 +6,7 @@ import (
 	"reflect"
 )
 
-func KeyExist(input interface{}) (int, error) {
+func keyExist(input interface{}) (int, error) {
 
 	if reflect.TypeOf(input).Kind().String() != "struct" {
 		return -1, fmt.Errorf("validator value not supported, because %v is not struct", reflect.TypeOf(input).Kind().String())
