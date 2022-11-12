@@ -10,6 +10,7 @@ go-playground-validator, see more about struct reference follow [this](https://g
   - [Installation](#installation)
   - [Example Usage Without GPC Tags](#example-usage-without-gpc-tags)
   - [Example Usage With GPC Tags](#example-usage-with-gpc-tags)
+- [Testing](#testing)
   - [Bugs](#bugs)
   - [Contributing](#contributing)
   - [License](#license)
@@ -93,6 +94,20 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
   //   ]
   // }
 ```
+
+## Testing
+
+- Testing Via Local
+
+  ```sh
+  go test .
+  ```
+
+- Testing Via Docker
+
+  ```sh
+  docker build -t go-playground-converter --compress . && docker run go-playground-converter go test .
+  ```
 
 ### Bugs
 
