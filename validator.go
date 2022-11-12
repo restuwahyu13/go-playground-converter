@@ -59,15 +59,9 @@ func formatError(err error, trans ut.Translator, customMessage interface{}) (int
 		errResult := make(map[string]interface{})
 		errResult["param"] = e.StructField()
 
-		// x, _ := reflect.TypeOf(customMessage).FieldByName(e.StructField())
-		// d := x.Tag.Get("gpc")
-
-		// fmt.Println(d)
-
 		if _, ok := reflect.TypeOf(customMessage).Field(i).Tag.Lookup("gpc"); !ok {
 			errResult["msg"] = e.Translate(trans)
 		} else {
-			// structTags := reflect.TypeOf(customMessage).Field(i).Tag.Get("gpc")
 			strucField, _ := reflect.TypeOf(customMessage).FieldByName(e.StructField())
 			structTags := strucField.Tag.Get("gpc")
 
