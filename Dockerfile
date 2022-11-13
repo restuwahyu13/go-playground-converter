@@ -10,6 +10,7 @@ RUN apt-get autoclean \
   && apt-get update \
   && apt-get install -y \
   build-essential
-RUN go mod tidy \
-  && go mod download \
+RUN go mod download \
+  && go mod tidy \
+  && go mod verify \
   && go build -o main .
