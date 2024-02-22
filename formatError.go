@@ -11,7 +11,7 @@ import (
 )
 
 type FormatError struct {
-	Errors []FormatErrorMetadata
+	Errors []FormatErrorMetadata `json:"errors"`
 }
 
 type FormatErrorMetadata struct {
