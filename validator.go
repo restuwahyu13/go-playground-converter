@@ -12,6 +12,7 @@ import (
 	en_translations "github.com/go-playground/validator/v10/translations/en"
 )
 
+// Validation request from struct field
 func Validator(s interface{}) (*FormatError, error) {
 	var (
 		translatorEnglish    locales.Translator      = en.New()
@@ -44,4 +45,9 @@ func Validator(s interface{}) (*FormatError, error) {
 
 	return formatError(err, getTranslator, s)
 
+}
+
+// Core module validator from https://github.com/go-playground/validator
+func GoValidator() *validator.Validate {
+	return validator.New()
 }
