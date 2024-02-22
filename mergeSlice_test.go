@@ -1,14 +1,18 @@
 package gpc
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestMergeSlice(action *testing.T) {
 	action.Run("Should be TestMergeSlice - is empty response", func(t *testing.T) {
-		data := []string{}
+		var (
+			data []string = []string{}
+			res  []string = mergeSlice(data)
+		)
 
-		res := mergeSlice(data)
-		if len(res) == 0 {
-			assert(t, len(res), 0)
+		if len(res) != 0 {
+			t.FailNow()
 		}
 	})
 
@@ -17,7 +21,7 @@ func TestMergeSlice(action *testing.T) {
 
 		res := mergeSlice(data)
 		if len(res) == 0 {
-			assert(t, len(res), 0)
+			t.FailNow()
 		}
 	})
 }

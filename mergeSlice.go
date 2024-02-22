@@ -1,14 +1,20 @@
 package gpc
 
-func mergeSlice(input ...[]string) (res []string) {
-	if len(input) > 0 {
-		for i, _ := range input {
-			for _, j := range input[i] {
-				res = append(res, j)
-			}
-		}
-	} else {
-		return res
+func mergeSlice(input ...[]string) []string {
+	if len(input) == 0 {
+		return []string{}
 	}
+
+	totalLen := 0
+	for _, in := range input {
+		totalLen += len(in)
+	}
+
+	res := make([]string, 0, totalLen)
+
+	for _, in := range input {
+		res = append(res, in...)
+	}
+
 	return res
 }
