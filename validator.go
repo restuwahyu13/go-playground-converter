@@ -15,6 +15,7 @@ import (
 // Validation request from struct field
 func Validator(s interface{}, options ...validator.Option) (*FormatError, error) {
 	var (
+		typeof               reflect.Type            = reflect.TypeOf(s)
 		translatorEnglish    locales.Translator      = en.New()
 		universalTranslator  *ut.UniversalTranslator = ut.New(translatorEnglish, translatorEnglish)
 		getTranslator, found                         = universalTranslator.GetTranslator("en")
@@ -24,8 +25,14 @@ func Validator(s interface{}, options ...validator.Option) (*FormatError, error)
 		return nil, errors.New("translator not found")
 	}
 
-	if reflect.TypeOf(s).Kind() != reflect.Struct {
-		return nil, fmt.Errorf("validator value not supported, because %v is not struct", reflect.TypeOf(s).Kind().String())
+	if typeof.Kind() == reflect.Pointer {
+		if typeof.Elem().Kind() == reflect.Struct {
+			return nil, fmt.Errorf("validator value not supported, because %v is struct pointer", typeof.Kind().String())
+		}
+	} else {
+		if typeof.Kind() != reflect.Struct {
+			return nil, fmt.Errorf("validator value not supported, because %v is not struct", typeof.Kind().String())
+		}
 	}
 
 	if res, err := keyExist(s); err != nil || res == 0 {
