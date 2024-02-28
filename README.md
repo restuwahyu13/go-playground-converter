@@ -116,7 +116,7 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
   // }
 ```
 
-### Example With Option
+### Example With Options
 
 ```go
 package main
@@ -165,6 +165,20 @@ import (
   //     }
   //   ]
   // }
+```
+
+### Example Custom Validation
+
+```go
+func GoValidator(s interface{}) (*gpc.FormatError, error) {
+ res, err := gpc.Validator(s) // <- pass your struct from param in here
+
+ if err != nil {
+   return nil, err
+ }
+
+  return res, nil
+}
 ```
 
 ## Testing
