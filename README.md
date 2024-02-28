@@ -10,7 +10,7 @@
   - [Installation](#installation)
   - [Example Usage Without GPC Tags](#example-usage-without-gpc-tags)
   - [Example Usage With GPC Tags](#example-usage-with-gpc-tags)
-  - [Example With Option](#example-with-options)
+  - [Example With Options](#example-with-options)
   - [Example Custom Validation](#example-custom-validation)
 - [Testing](#testing)
   - [Bugs](#bugs)
