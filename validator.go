@@ -13,7 +13,7 @@ import (
 )
 
 // Validation request from struct field
-func Validator(s interface{}) (*FormatError, error) {
+func Validator(s interface{}, options ...validator.Option) (*FormatError, error) {
 	var (
 		translatorEnglish    locales.Translator      = en.New()
 		universalTranslator  *ut.UniversalTranslator = ut.New(translatorEnglish, translatorEnglish)
@@ -32,7 +32,7 @@ func Validator(s interface{}) (*FormatError, error) {
 		return nil, fmt.Errorf("validator value can't be empty struct %v", s)
 	}
 
-	val := validator.New()
+	val := validator.New(options...)
 	err := val.Struct(s)
 
 	if err == nil {
@@ -48,6 +48,6 @@ func Validator(s interface{}) (*FormatError, error) {
 }
 
 // Core module validator from https://github.com/go-playground/validator
-func GoValidator() *validator.Validate {
-	return validator.New()
+func GoValidator(options ...validator.Option) *validator.Validate {
+	return validator.New(options...)
 }

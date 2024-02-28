@@ -10,6 +10,7 @@
   - [Installation](#installation)
   - [Example Usage Without GPC Tags](#example-usage-without-gpc-tags)
   - [Example Usage With GPC Tags](#example-usage-with-gpc-tags)
+  - [Example With Option](#example-with-option)
 - [Testing](#testing)
   - [Bugs](#bugs)
   - [Contributing](#contributing)
@@ -37,14 +38,19 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
   }
 
   func main() {
-     payload := Login{Email: "", Password: ""}
-     res, err := gpc.Validator(payload)
+  	payload := Login{Email: "", Password: ""}
+  	res, err := gpc.Validator(payload) // if not errors, validator return res & err nil value
 
-      if err != nil {
-        panic(err)
-      }
+  	if err != nil {
+  		panic(err)
+  	}
 
-      fmt.Println(res) // if not errors, validator return nil value
+  	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+  		w.Header().Set("Content-Type", "application/json")
+  		json.NewEncoder(w).Encode(&res)
+  	})
+
+  	http.ListenAndServe(":3000", nil)
   }
 
   // {
@@ -79,14 +85,19 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
   }
 
   func main() {
-     payload := Login{Email: "", Password: ""}
-     res, err := gpc.Validator(payload)
+  	payload := Login{Email: "", Password: ""}
+  	res, err := gpc.Validator(payload) // if not errors, validator return res & err nil value
 
-      if err != nil {
-        panic(err)
-      }
+  	if err != nil {
+  		panic(err)
+  	}
 
-      fmt.Println(res) // if not errors, validator return nil value
+  	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+  		w.Header().Set("Content-Type", "application/json")
+  		json.NewEncoder(w).Encode(&res)
+  	})
+
+  	http.ListenAndServe(":3000", nil)
   }
 
   // {
@@ -98,6 +109,57 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
   //     },
   //     {
   //       "msg": "Password tidak boleh kosong",
+  //       "param": "Password",
+  //       "tag": "required"
+  //     }
+  //   ]
+  // }
+```
+
+### Example With Option
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"net/http"
+
+	"github.com/go-playground/validator/v10"
+
+	gpc "github.com/restuwahyu13/go-playground-converter"
+)
+
+  type Login struct {
+  	Email    string `validate:"required,email" json:"email"`
+  	Password string `validate:"required,uuid" json:"password"`
+  }
+
+  func main() {
+  	payload := Login{Email: "", Password: ""}
+  	res, err := gpc.Validator(payload, validator.WithRequiredStructEnabled()) // if not errors, validator return res & err nil value
+
+  	if err != nil {
+  		panic(err)
+  	}
+
+  	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+  		w.Header().Set("Content-Type", "application/json")
+  		json.NewEncoder(w).Encode(&res)
+  	})
+
+  	http.ListenAndServe(":3000", nil)
+  }
+
+  // {
+  //   "errors": [
+  //     {
+  //       "msg": "Email is a required field",
+  //       "param": "Email",
+  //       "tag": "required"
+  //     },
+  //     {
+  //       "msg": "Password is a required field",
   //       "param": "Password",
   //       "tag": "required"
   //     }
