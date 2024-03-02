@@ -51,7 +51,6 @@ func Validator(s interface{}, options ...validator.Option) (*FormatError, error)
 	}
 
 	return formatError(err, getTranslator, s)
-
 }
 
 // Core module validator from https://github.com/go-playground/validator

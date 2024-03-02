@@ -22,9 +22,14 @@ type FormatErrorMetadata struct {
 
 func formatError(err error, trans ut.Translator, customMessage interface{}) (*FormatError, error) {
 	var (
-		mutex       *sync.RWMutex = new(sync.RWMutex)
-		errResponse *FormatError  = new(FormatError)
+		mutex           *sync.RWMutex = new(sync.RWMutex)
+		errResponsePool *sync.Pool    = new(sync.Pool)
 	)
+
+	errResponsePool.New = func() interface{} {
+		return new(FormatError)
+	}
+	errResponse := errResponsePool.Get().(*FormatError)
 
 	for i, e := range err.(validator.ValidationErrors) {
 		errResult := new(FormatErrorMetadata)
@@ -55,5 +60,6 @@ func formatError(err error, trans ut.Translator, customMessage interface{}) (*Fo
 		errResponse.Errors = append(errResponse.Errors, *errResult)
 	}
 
+	errResponsePool.Put(errResponse)
 	return errResponse, nil
 }
