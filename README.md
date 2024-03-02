@@ -10,7 +10,8 @@
   - [Installation](#installation)
   - [Example Usage Without GPC Tags](#example-usage-without-gpc-tags)
   - [Example Usage With GPC Tags](#example-usage-with-gpc-tags)
-  - [Example With Option](#example-with-option)
+  - [Example With Options](#example-with-options)
+  - [Example Custom Validation](#example-custom-validation)
 - [Testing](#testing)
   - [Bugs](#bugs)
   - [Contributing](#contributing)
@@ -33,8 +34,8 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
   )
 
   type Login struct {
-  	Email    string `validate:"required"`
-  	Password string `validate:"required"`
+  	Email    string `validate:"required" json:"email"`
+  	Password string `validate:"required" json:"password"`
   }
 
   func main() {
@@ -80,8 +81,8 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
   )
 
   type Login struct {
-  	Email    string `validate:"required" gpc:"required=Email tidak boleh kosong"`
-  	Password string `validate:"required" gpc:"required=Password tidak boleh kosong"`
+  	Email    string `validate:"required" gpc:"required=Email tidak boleh kosong" json:"email"`
+  	Password string `validate:"required" gpc:"required=Password tidak boleh kosong" json:"password"`
   }
 
   func main() {
@@ -116,7 +117,7 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
   // }
 ```
 
-### Example With Option
+### Example With Options
 
 ```go
 package main
@@ -131,8 +132,8 @@ import (
 )
 
   type Login struct {
-  	Email    string `validate:"required,email" json:"email"`
-  	Password string `validate:"required,uuid" json:"password"`
+  	Email    string `validate:"required" json:"email"`
+  	Password string `validate:"required" json:"password"`
   }
 
   func main() {
@@ -165,6 +166,20 @@ import (
   //     }
   //   ]
   // }
+```
+
+### Example Custom Validation
+
+```go
+func GoValidator(s interface{}) (*gpc.FormatError, error) {
+ res, err := gpc.Validator(s) // <- pass your struct from param in here
+
+ if err != nil {
+   return nil, err
+ }
+
+  return res, nil
+}
 ```
 
 ## Testing
