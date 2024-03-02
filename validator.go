@@ -26,9 +26,7 @@ func Validator(s interface{}, options ...validator.Option) (*FormatError, error)
 	}
 
 	if typeof.Kind() == reflect.Pointer {
-		if typeof.Elem().Kind() == reflect.Struct {
-			return nil, fmt.Errorf("validator value not supported, because %v is struct pointer", typeof.Kind().String())
-		}
+		return nil, fmt.Errorf("validator value not supported, because %v is struct pointer", typeof.Kind().String())
 	} else {
 		if typeof.Kind() != reflect.Struct {
 			return nil, fmt.Errorf("validator value not supported, because %v is not struct", typeof.Kind().String())
