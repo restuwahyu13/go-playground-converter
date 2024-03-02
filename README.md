@@ -228,13 +228,13 @@ func GoValidator(s interface{}) (*gpc.FormatError, error) {
 - Testing Via Local
 
   ```sh
-  go test .
+   go test --race -v --failfast .
   ```
 
 - Testing Via Docker
 
   ```sh
-  docker build -t go-playground-converter --compress . && docker run go-playground-converter go test --cover -v --failfast .
+  docker build -t go-playground-converter --compress . && docker run go-playground-converter go test --race -v --failfast .
   ```
 
 ### Bugs
