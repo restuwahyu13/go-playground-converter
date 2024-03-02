@@ -12,6 +12,7 @@
   - [Example Usage With GPC Tags](#example-usage-with-gpc-tags)
   - [Example With Options](#example-with-options)
   - [Example Custom Validation](#example-custom-validation)
+  - [Example Custom Validation With Gorutine](#example-custom-validation-with-gorutine)
 - [Testing](#testing)
   - [Bugs](#bugs)
   - [Contributing](#contributing)
@@ -179,6 +180,46 @@ func GoValidator(s interface{}) (*gpc.FormatError, error) {
  }
 
   return res, nil
+}
+```
+
+### Example Custom Validation With Gorutine
+
+```go
+func GoValidator(s interface{}) (*gpc.FormatError, error) {
+	var (
+		wg      *sync.WaitGroup       = new(sync.WaitGroup)
+		errChan chan error            = make(chan error, 1)
+		resChan chan *gpc.FormatError = make(chan *gpc.FormatError, 1)
+	)
+
+	wg.Add(1)
+
+	go func() {
+		defer wg.Done()
+
+		res, err := gpc.Validator(s) // <- pass your struct from param in here
+		if err != nil {
+			errChan <- err
+			resChan <- nil
+		}
+
+		if res != nil {
+			errChan <- nil
+			resChan <- res
+		}
+	}()
+
+	defer close(errChan)
+	defer close(resChan)
+
+	wg.Wait()
+
+	if err := <-errChan; err != nil {
+		return nil, err
+	}
+
+	return <-resChan, nil
 }
 ```
 
