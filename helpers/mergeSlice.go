@@ -1,4 +1,4 @@
-package gpc
+package helper
 
 func mergeSlice(input ...[]string) []string {
 	if len(input) == 0 {

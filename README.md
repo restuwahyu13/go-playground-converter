@@ -8,11 +8,7 @@
 
 - [Go Playground Converter](#go-playground-converter)
   - [Installation](#installation)
-  - [Example Usage Without GPC Tags](#example-usage-without-gpc-tags)
-  - [Example Usage With GPC Tags](#example-usage-with-gpc-tags)
-  - [Example With Options](#example-with-options)
-  - [Example Custom Validation](#example-custom-validation)
-  - [Example Custom Validation With Gorutine](#example-custom-validation-with-gorutine)
+  - [Example Usage](#example-usage)
 - [Testing](#testing)
   - [Bugs](#bugs)
   - [Contributing](#contributing)
@@ -24,7 +20,7 @@
 $ go get -u github.com/restuwahyu13/go-playground-converter
 ```
 
-### Example Usage Without GPC Tags
+### Example Usage
 
 ```go
   package main
@@ -41,8 +37,9 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
 
   func main() {
   	payload := Login{Email: "", Password: ""}
-  	res, err := gpc.Validator(payload) // if not errors, validator return res & err nil value
+  	validator := validate.New() // if not errors, validator return res & err nil value
 
+  	res, err := validate.Struct(req)
   	if err != nil {
   		panic(err)
   	}
@@ -55,8 +52,7 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
   	http.ListenAndServe(":3000", nil)
   }
 
-  // {
-  //   "errors": [
+  //  [
   //     {
   //       "msg": "Email is a required field",
   //       "param": "Email",
@@ -68,159 +64,6 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
   //       "tag": "required"
   //     }
   //   ]
-  // }
-```
-
-### Example Usage With GPC Tags
-
-```go
-  package main
-
-  import (
-  "fmt"
-   gpc "github.com/restuwahyu13/go-playground-converter"
-  )
-
-  type Login struct {
-  	Email    string `validate:"required" gpc:"required=Email tidak boleh kosong" json:"email"`
-  	Password string `validate:"required" gpc:"required=Password tidak boleh kosong" json:"password"`
-  }
-
-  func main() {
-  	payload := Login{Email: "", Password: ""}
-  	res, err := gpc.Validator(payload) // if not errors, validator return res & err nil value
-
-  	if err != nil {
-  		panic(err)
-  	}
-
-  	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-  		w.Header().Set("Content-Type", "application/json")
-  		json.NewEncoder(w).Encode(&res)
-  	})
-
-  	http.ListenAndServe(":3000", nil)
-  }
-
-  // {
-  //   "errors": [
-  //     {
-  //       "msg": "Email tidak boleh kosong",
-  //       "param": "Email",
-  //       "tag": "required"
-  //     },
-  //     {
-  //       "msg": "Password tidak boleh kosong",
-  //       "param": "Password",
-  //       "tag": "required"
-  //     }
-  //   ]
-  // }
-```
-
-### Example With Options
-
-```go
-package main
-
-import (
-	"encoding/json"
-	"net/http"
-
-	"github.com/go-playground/validator/v10"
-
-	gpc "github.com/restuwahyu13/go-playground-converter"
-)
-
-  type Login struct {
-  	Email    string `validate:"required" json:"email"`
-  	Password string `validate:"required" json:"password"`
-  }
-
-  func main() {
-  	payload := Login{Email: "", Password: ""}
-  	res, err := gpc.Validator(payload, validator.WithRequiredStructEnabled()) // if not errors, validator return res & err nil value
-
-  	if err != nil {
-  		panic(err)
-  	}
-
-  	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-  		w.Header().Set("Content-Type", "application/json")
-  		json.NewEncoder(w).Encode(&res)
-  	})
-
-  	http.ListenAndServe(":3000", nil)
-  }
-
-  // {
-  //   "errors": [
-  //     {
-  //       "msg": "Email is a required field",
-  //       "param": "Email",
-  //       "tag": "required"
-  //     },
-  //     {
-  //       "msg": "Password is a required field",
-  //       "param": "Password",
-  //       "tag": "required"
-  //     }
-  //   ]
-  // }
-```
-
-### Example Custom Validation
-
-```go
-func GoValidator(s interface{}) (*gpc.FormatError, error) {
- res, err := gpc.Validator(s) // <- pass your struct from param in here
-
- if err != nil {
-   return nil, err
- }
-
-  return res, nil
-}
-```
-
-### Example Custom Validation With Gorutine
-
-```go
-func GoValidator(s interface{}) (*gpc.FormatError, error) {
-	var (
-		wg      *sync.WaitGroup       = new(sync.WaitGroup)
-		errChan chan error            = make(chan error, 1)
-		resChan chan *gpc.FormatError = make(chan *gpc.FormatError, 1)
-	)
-
-	wg.Add(1)
-
-	go func() {
-		defer wg.Done()
-
-		res, err := gpc.Validator(s) // <- pass your struct from param in here
-		if err != nil {
-			errChan <- err
-			resChan <- nil
-		}
-
-		if res != nil {
-			errChan <- nil
-			resChan <- res
-		}
-	}()
-
-	defer close(errChan)
-	defer close(resChan)
-
-	wg.Wait()
-
-	if err := <-errChan; err != nil {
-		return nil, err
-	}
-
-	return <-resChan, nil
-}
 ```
 
 ## Testing

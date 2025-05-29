@@ -1,4 +1,4 @@
-package gpc
+package helper
 
 import (
 	"testing"

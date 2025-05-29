@@ -1,14 +1,13 @@
-package gpc
+package helper
 
 import (
 	"encoding/json"
-	"fmt"
 	"reflect"
 )
 
-func keyExist(input interface{}) (int, error) {
+func KeyExist(input interface{}) (int, error) {
 	if reflect.TypeOf(input).Kind() != reflect.Struct {
-		return -1, fmt.Errorf("validator value not supported, because %v is not struct", reflect.TypeOf(input).Kind().String())
+		return -1, Exception("key_exist_input_invalid", input)
 	}
 
 	received := make(map[string]interface{})

@@ -1,4 +1,4 @@
-package gpc
+package helper
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 func TestKeyExist(action *testing.T) {
 	action.Run("Should be TestKeyExist - key not exist", func(t *testing.T) {
 		data := "hello wordl"
-		_, err := keyExist(data)
+		_, err := KeyExist(data)
 
 		if err == nil {
 			t.FailNow()
@@ -20,7 +20,7 @@ func TestKeyExist(action *testing.T) {
 			Email    string `json:"email"`
 		}{}
 
-		_, err := keyExist(data)
+		_, err := KeyExist(data)
 
 		if err != nil {
 			t.FailNow()
