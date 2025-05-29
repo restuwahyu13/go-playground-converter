@@ -27,7 +27,7 @@ $ go get -u github.com/restuwahyu13/go-playground-converter
 
   import (
   "fmt"
-   gpc "github.com/restuwahyu13/go-playground-converter"
+   validate "github.com/restuwahyu13/go-playground-converter"
   )
 
   type Login struct {
