@@ -3,8 +3,7 @@
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/restuwahyu13/go-playground-converter?style=flat)
 [![Go Report Card](https://goreportcard.com/badge/github.com/restuwahyu13/go-playground-converter)](https://goreportcard.com/report/github.com/restuwahyu13/go-playground-converter) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/restuwahyu13/go-playground-converter/blob/master/CONTRIBUTING.md)
 
-**go-playground-converter** is formatter error response inspiration like express-validator in Node.js. `go-playground-converter` builds on top of
-`go-playground/validator`, see more about struct references and follow this [documentation](https://github.com/go-playground/validator), And for the new version of `go-playground-converter`, you can use custom messages using `gpc` struct tags, and you need the core `go-playground/validator` you can access use  `GoValidator`.
+**go-playground-converter** is formatter error response inspiration like express-validator in Node.js. `go-playground-converter` builds on top of `go-playground/validator`, see more about struct references and follow this [documentation](https://github.com/go-playground/validator).
 
 - [Go Playground Converter](#go-playground-converter)
   - [Installation](#installation)
